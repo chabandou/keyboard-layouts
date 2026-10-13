@@ -2,6 +2,28 @@
 
 Personal keyboard layout setups, per OS.
 
+- `windows/` — EPKL portable install (Colemak-DH Wide ANS eD).
+- `linux/` — Arch/Omarchy + Hyprland custom XKB (Colemak-DH Wide + Arabic).
+
+## linux/
+
+Exact mirror of the Linux keyboard setup on `omarchy`
+(Arch Linux, Hyprland 0.56.1, Wayland), captured 2026-10-13.
+See `linux/README.md`.
+
+- Active Hyprland input: `kb_layout = custom,ara`,
+  `kb_variant = cmk_ed_dh_wide_full,`, `kb_model = pc104awide`,
+  `kb_options = lv3:ralt_switch` (symbols in `linux/xkb/symbols/custom`,
+  includes DreymaR `us(colemak_dh_wide)` BigBag base + eD layer).
+- `linux/Setup-linux.sh` — restores xkb/hypr/kanata/scripts, recompiles the
+  keymap with `xkbcli`, applies system `fr` TTY/Xorg keymap with sudo.
+
+### Restore on a fresh Linux machine
+
+1. Install DreymaR BigBag first if `us(colemak_dh_wide)` is missing.
+2. Run `linux/Setup-linux.sh`, then `hyprctl reload`.
+3. `systemctl --user start kanata.service` for Space-Extend/home-row mods.
+
 ## windows/EPKL
 
 Exact mirror of the EPKL portable install on the source machine

@@ -1,0 +1,54 @@
+partial alphanumeric_keys
+xkb_symbols "cmk_ed_dh_wide_full" {
+    // Wide base (levels 1-2) + DreymaR wide symbol layer (levels 3-4).
+    include "us(colemak_dh_wide)"
+    key <AE01> { [ 1, exclam, dead_belowdot, exclamdown ] };
+    key <AE02> { [ 2, at, dead_hook, twosuperior ] };
+    key <AE03> { [ 3, numbersign, dead_horn, threesuperior ] };
+    key <AE04> { [ 4, dollar, dead_currency, sterling ] };
+    key <AE05> { [ 5, percent, mu, U2030 ] };
+    key <AE06> { [ 6, asciicircum, dead_circumflex, partialderivative ] };
+    key <AE07> { [ equal, plus, dead_caron, notsign ] };
+    key <AE08> { [ 7, ampersand, dead_ogonek, infinity ] };
+    key <AE09> { [ 8, asterisk, dead_breve, periodcentered ] };
+    key <AE10> { [ 9, parenleft, dead_abovering, degree ] };
+    key <AE11> { [ 0, parenright, dead_doubleacute, notequal ] };
+    key <AE12> { [ minus, underscore, dead_grave, brokenbar ] };
+    key <AD01> { [ q, Q, KP_7, KP_7 ] };
+    key <AD02> { [ w, W, KP_8, KP_8 ] };
+    key <AD03> { [ f, F, KP_9, KP_9 ] };
+    key <AD04> { [ p, P, KP_Divide, slash ] };
+    key <AD05> { [ b, B, KP_Multiply, asterisk ] };
+    key <AD06> { [ bracketleft, braceleft, guillemotleft, U2039 ] };
+    key <AD07> { [ j, J, asciicircum, asciicircum ] };
+    key <AD08> { [ l, L, at, at ] };
+    key <AD09> { [ u, U, numbersign, numbersign ] };
+    key <AD10> { [ y, Y, dollar, dollar ] };
+    key <AD11> { [ semicolon, colon, percent, percent ] };
+    key <AD12> { [ apostrophe, quotedbl, ae, AE ] };
+    key <AC01> { [ a, A, KP_4, KP_4 ] };
+    key <AC02> { [ r, R, KP_5, KP_5 ] };
+    key <AC03> { [ s, S, KP_6, KP_6 ] };
+    key <AC04> { [ t, T, KP_Subtract, minus ] };
+    key <AC05> { [ g, G, KP_Add, plus ] };
+    key <AC06> { [ bracketright, braceright, guillemotright, U203A ] };
+    key <AC07> { [ m, M, exclam, exclam ] };
+    key <AC08> { [ n, N, ampersand, ampersand ] };
+    key <AC09> { [ e, E, asterisk, asterisk ] };
+    key <AC10> { [ i, I, parenleft, parenleft ] };
+    key <AC11> { [ o, O, parenright, parenright ] };
+    key <AB01> { [ x, X, KP_1, KP_1 ] };
+    key <AB02> { [ c, C, KP_2, KP_2 ] };
+    key <AB03> { [ d, D, KP_3, KP_3 ] };
+    key <AB04> { [ v, V, KP_0, KP_0 ] };
+    key <AB05> { [ z, Z, KP_Decimal, KP_Decimal ] };
+    key <AB06> { [ slash, question, asciitilde, asciitilde ] };
+    key <AB07> { [ k, K, grave, asciitilde ] };
+    key <AB08> { [ h, H, apostrophe, quotedbl ] };
+    key <AB09> { [ comma, less, bracketleft, bracketright ] };
+    key <AB10> { [ period, greater, braceleft, braceright ] };
+    key <AB11> { [ slash, question, dead_stroke, questiondown ] };
+    key <BKSL> { [ backslash, bar, dead_diaeresis, ellipsis ] };
+    key <LSGT> { [ z, Z, oslash, Oslash ] };
+    name[Group1]= "English (Colemak-DH Wide, DreymaR wide layer)";
+};
