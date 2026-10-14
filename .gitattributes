@@ -1,0 +1,15 @@
+# Keep Windows line endings for EPKL config/scripts so clones restore byte-identical files.
+*.ini text eol=crlf
+*.ps1 text eol=crlf
+*.reg text eol=crlf
+*.klc text eol=crlf
+*.skl text eol=crlf
+
+# Binaries committed intentionally (self-contained portable setup).
+*.exe binary
+*.zip binary
+*.png binary
+*.ico binary
+*.lnk binary
+*.xcf binary
+*.url binary

@@ -1,0 +1,20 @@
+;
+; EPKL Layouts Override - mirrors host cmk_ed_dh_wide_full (Colemak-DH Wide ANS eD)
+; Host: custom,ara / cmk_ed_dh_wide_full / pc104awide / lv3:ralt_switch
+; Kanata owns Space-Extend + home-row mods + Caps=Shift, so EPKL only does base + symbols.
+;
+[pkl]
+LayMain = Colemak
+LayPath = @L\Cmk-eD
+LayType = eD
+LayVari = --
+KbdType = ANS
+CurlMod = Curl
+HardMod = AWide
+OthrMod = --
+layout = Colemak\Cmk-eD\Cmk-eD_ANS_CurlAWide:Colemak-DH-Wide(eD) CAW, QWERTY\QWE-VK_ANS_AWide:QWERTY-AWide
+
+[layout]
+; Caps as plain Shift (matches host Kanata caps->lsft). EPKL Extend stays available
+; on Caps only when Kanata is not running; when Kanata runs it swallows Caps first.
+QWCLK = LShift    Modifier
