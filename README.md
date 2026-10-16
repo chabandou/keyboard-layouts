@@ -2,7 +2,7 @@
 
 Personal keyboard layout setups, per OS.
 
-- `windows/` — EPKL portable install (Colemak-DH Wide ANS eD).
+- `windows/` — native Colemak-DH Wide layout + Kanata (mirror of the Linux setup).
 - `linux/` — Arch/Omarchy + Hyprland custom XKB (Colemak-DH Wide + Arabic).
 
 ## linux/
@@ -24,47 +24,59 @@ See `linux/README.md`.
 2. Run `linux/Setup-linux.sh`, then `hyprctl reload`.
 3. `systemctl --user start kanata.service` for Space-Extend/home-row mods.
 
-## windows/EPKL
+## windows/
 
-Exact mirror of the EPKL portable install on the source machine
-(`C:\Tools\EPKL`), captured 2026-10-13.
+Same split as Linux: the OS layout does the letters and AltGr symbols,
+Kanata does Space-Extend, home-row mods and Caps=Shift.
 
-- Upstream: EPKL (EPiKaL Portable Keyboard Layout) by DreymaR,
-  based on PKL by Farkas Máté. See `windows/EPKL/README.md` and
-  `windows/EPKL/LICENSE.md`.
-- Active layout (from `EPKL_Layouts_Override.ini`):
-  **Colemak-DH Wide ANS eD** (`Colemak\Cmk-eD\Cmk-eD_ANS_CurlAWide`),
-  plus `QWERTY\QWE-VK_ANS_AWide` as layout 2.
-  Caps is mapped to plain Shift (`QWCLK = LShift`) because Kanata
-  owns Caps/Space-Extend/home-row mods on the host.
-- Program settings override: only `showHelpImage = no`
-  (see `windows/EPKL/EPKL_Settings_Override.ini`).
+| Linux | Windows |
+|---|---|
+| XKB `custom(cmk_ed_dh_wide_full)` + `pc104awide` | native layout `CmkDHW` (`windows/layout/`) |
+| `kanata.service` + `linux/kanata/config.kbd` | `C:\Tools\kanata\kanata.exe` + `windows/kanata/config.kbd` |
+| `switchxkblayout` EN/AR | Win+Space between English (CmkDHW) and Arabic |
 
-### Layout
+- `windows/layout/gen-klc.py` generates `CmkDHW.klc` from
+  `linux/xkb/keymaps/cmk_ed_dh_wide_full.xkb` (levels 1-4 become
+  Base/Shift/AltGr/Shift+AltGr; XKB dead keys become Windows dead keys).
+  `amd64/` and `wow64/` hold the DLLs built from it with MSKLC's `kbdutool`.
+- `windows/layout/Install-Layout.ps1` (elevated) copies the DLLs to
+  System32/SysWOW64, registers the layout and makes it the default
+  under English (US). `-Uninstall` reverses it.
+- `windows/kanata/kanata.exe` is the kanata v1.11.0 `gui_winIOv2_x64` build.
+  Not v1.12.0: that release turned on a Windows key-state sync that checks
+  keys by their US QWERTY virtual-key code, so under Colemak/AZERTY it logs
+  "Unexpected keycode is pressed in kanata but not in Windows" and can eat
+  repeated presses (jtroo/kanata#2115). v1.13+ adds
+  `windows-sync-keystates none` to switch it off; until then stay on v1.11.0.
+  winIOv2 sends scancodes, so its output goes through the Windows layout the
+  same way Linux kanata output goes through XKB. (The default LLHOOK build
+  doesn't follow OS-level layouts reliably; see kanata issue #152.)
+- `windows/kanata/config.kbd` is `linux/kanata/config.kbd` plus
+  `windows-altgr add-lctl-release`, with the Extend Ctrl shortcuts keyed by the
+  physical key that carries each letter in Colemak-DH Wide (so Ctrl+F is
+  really Ctrl+F) and Omarchy's Super+X/C cut/copy as Ctrl+X/C.
+- `windows/Setup-Windows.ps1` (elevated) runs the layout installer, installs
+  kanata to `C:\Tools\kanata`, stops EPKL and swaps the Startup shortcut.
+  `windows/Fix-Startup.ps1` just recreates the `Kanata.lnk` Startup shortcut.
 
-- `windows/EPKL/` — verbatim copy of `C:\Tools\EPKL`
-  (2899 files, incl. `EPKL.exe`, stock layouts, images, docs).
-- `windows/Setup-EPKL.ps1` — elevated one-time installer:
-  expands the portable zip, installs the layout override,
-  creates Startup shortcuts for EPKL + Kanata.
-- `windows/Fix-Startup.ps1` — recreates the Startup
-  `EPKL.lnk` + `Kanata.lnk` shortcuts.
-- `windows/EPKL_Layouts_Override.ini.source` — source copy of the
-  layout override installed as `EPKL_Layouts_Override.ini`
-  (identical to `windows/EPKL/EPKL_Layouts_Override.ini`).
+EPKL was used until 2026-10-16; it was dropped because its tap-or-mod keys
+only switch to hold on a timer and send interrupted taps out of order. The old
+EPKL tree is in git history (commit `610d289`).
+
+### Rebuild the layout after changing the Linux XKB keymap
+
+1. `python windows/layout/gen-klc.py`
+2. Build with MSKLC's `kbdutool` (from the MSKLC 1.4 package, `bin\i386`):
+   `kbdutool -u -m CmkDHW.klc` (amd64) and `kbdutool -u -o CmkDHW.klc` (wow64),
+   then copy each `CmkDHW.dll` into `windows/layout/amd64` and `wow64`.
+3. Re-run `windows/layout/Install-Layout.ps1` elevated and sign out/in.
 
 ### Restore on a fresh Windows machine
 
-1. Copy `windows/EPKL` to `C:\Tools\EPKL`.
-2. (Option A) Run `windows/Setup-EPKL.ps1` elevated.
-   (Option B) Manually create Startup shortcuts pointing at
-   `C:\Tools\EPKL\EPKL.exe` (workdir `C:\Tools\EPKL`).
-3. Start `EPKL.exe` once and verify the tray menu shows
-   `Colemak-DH-Wide(eD) CAW`.
+1. Run `windows/Setup-Windows.ps1` from an elevated PowerShell.
+2. Sign out and back in (or reboot).
+3. Check that the input switcher shows English with
+   "Colemak-DH Wide (eD, Linux mirror)" and that kanata's tray icon is present.
 
-### Notes
-
-- Binaries (`EPKL.exe`, `*.png`, `*.ico`, `*.zip`, `*.lnk`) are
-  committed intentionally so a clone is fully self-contained.
-- `Other/Startup_Shortcut.lnk` is a template shortcut, not the
-  live Startup entry (live entries live in the Windows Startup folder).
+Note: kanata only remaps keys going into non-elevated windows unless it is
+itself run as administrator (Windows UIPI).

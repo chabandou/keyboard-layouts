@@ -1,12 +1,15 @@
-# Keep Windows line endings for EPKL config/scripts so clones restore byte-identical files.
+# Keep Windows line endings for Windows scripts so clones restore byte-identical files.
 *.ini text eol=crlf
 *.ps1 text eol=crlf
 *.reg text eol=crlf
-*.klc text eol=crlf
-*.skl text eol=crlf
 
-# Binaries committed intentionally (self-contained portable setup).
+# MSKLC .klc files are UTF-16: line-ending conversion corrupts them, so treat as binary.
+*.klc binary
+*.skl binary
+
+# Binaries committed intentionally (self-contained setup).
 *.exe binary
+*.dll binary
 *.zip binary
 *.png binary
 *.ico binary

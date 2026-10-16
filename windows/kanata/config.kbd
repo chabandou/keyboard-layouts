@@ -1,0 +1,69 @@
+;; Windows port of linux/kanata/config.kbd - same layers, same tap-hold timings.
+;; Run with the winIOv2 build (installed as C:\Tools\kanata\kanata.exe): it sends
+;; scancodes, so its output goes through the Colemak-DH Wide Windows layout exactly
+;; like Linux kanata output goes through XKB.
+;;
+;; Windows-only differences from the Linux file:
+;;  - windows-altgr: the layout has AltGr and ralt is in defsrc, so drop the fake
+;;    LCtrl Windows attaches to it (otherwise LCtrl can stick).
+;;  - Extend shortcuts are keyed by the PHYSICAL key that types the wanted letter
+;;    under Colemak-DH Wide, so C-f really is Ctrl+F (kanata names are QWERTY
+;;    scancodes: physical E types f, F types t, P types y, H types ], B types z,
+;;    Z types x, X types c, T types b).
+;;  - Omarchy's M-x/M-c universal cut/copy become Ctrl+X/Ctrl+C (Win+X/Win+C are
+;;    system shortcuts on Windows).
+
+(defcfg
+  process-unmapped-keys yes
+  danger-enable-cmd no
+  windows-altgr add-lctl-release
+)
+
+;; Physical ANSI keyboard layout
+(defsrc
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet lalt           spc            ralt rmet rctl
+)
+
+(deflayer base
+  _       _    _    _    _    _    _    _    _      _    _    _    _    _
+  _       _    _    _    _    _    _    _    _      _    _    _    _    _
+  lsft    @a   _    _    @f    _    _    _   @k     _    _    @'    _
+  lmet    _    _    _    _    _    _    _    _      _    _    rmet
+  _       _    _              @spc           _      _    _
+)
+
+(deflayer extend
+  _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
+  _    esc  @cw  @cf  A-f4 @ct  @cy  pgup home up   end  S-ins @crb _
+  _    lmet lalt lsft lctl _    bspc pgdn left down rght bspc _
+  _    @cz  @scx @scc @scv @cb  @s1  @s2  @s3  @s4  @s5  _
+  _    _    _              _              _    _    _
+)
+
+(defalias
+  spc (tap-hold 200 200 spc (layer-while-held extend))
+  a (tap-hold 200 200 a ralt)
+  f (tap-hold 200 200 f lctl)
+  k (tap-hold 200 200 k lctl)
+  ' (tap-hold 200 200 ' rsft)
+  ;; Ctrl+<letter> by the physical key carrying that letter in Colemak-DH Wide
+  cw  C-w   ;; Ctrl+W
+  cf  C-e   ;; Ctrl+F
+  ct  C-f   ;; Ctrl+T
+  cy  C-p   ;; Ctrl+Y
+  crb C-h   ;; Ctrl+]
+  cz  C-b   ;; Ctrl+Z
+  cb  C-t   ;; Ctrl+B
+  scx C-z   ;; Ctrl+X (cut)
+  scc C-x   ;; Ctrl+C (copy)
+  scv S-ins
+  s1 M-1
+  s2 M-2
+  s3 M-3
+  s4 M-4
+  s5 M-5
+)
